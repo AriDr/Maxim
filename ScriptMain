@@ -16,3 +16,4 @@ game:GetService("Workspace").Collectibles.ChildAdded:Connect(function(Tokens)
         end    
     end
 end)
+--REAL
