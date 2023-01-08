@@ -1,19 +1,16 @@
 --I Would Recommend 4 Or More For The Teleport Time
-getgenv().api = loadstring(game:HttpGet("https://raw.githubusercontent.com/Boxking776/kocmoc/main/api.lua"))()
+getgenv().api = loadstring(game:HttpGet("https://raw.githubusercontent.com/AriDr/Maxim/codespace-aridr-improved-waffle-p559997j9j43rjxq/Api?token=GHSAT0AAAAAAB5FV6F7ZTAEYMXUTITJGFDEY52UZGA"))()
 getgenv().Enabled = false
 local canTeleport = true
 game:GetService("Workspace").Collectibles.ChildAdded:Connect(function(Tokens)
     if canTeleport == true and Enabled == true and Tokens:FindFirstChild("FrontDecal") then
-        if (api.humanoidrootpart.Position - Tokens.Position)>=15 then
+        if api.rmagnitude(game:GetService("Workspace").FlowerZones["Stump Field"].Position - Tokens.Position) <= 5 then
             canTeleport = false
-            api:walkTo(Tokens.Position)
+            api:pathfind(Tokens.Position)
+            if api.rmagnitude(api.humanoidrootpart.Position - Tokens.Position) <= 1
             task.wait(0.5)
-            canTeleport = true
-        else
-            api:walkTo(game:GetService("Workspace").FlowerZones["Stump Field"].Position + vector3.new(0,1,0))
-            task.wait(0.5)
-            canTeleport = true
+                canTeleport = true
+            end
         end    
     end
 end)
---REAL
