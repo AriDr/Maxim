@@ -6,7 +6,7 @@ game:GetService("Workspace").Collectibles.ChildAdded:Connect(function(Tokens)
         if api.rmagnitude(game:GetService("Workspace").FlowerZones["Stump Field"].Position - Tokens.Position) <= 5 then
             canTeleport = false
             api:pathfind(Tokens.Position)
-            if api.rmagnitude(api.humanoidrootpart.Position - Tokens.Position) <= 1
+            if api.rmagnitude(api.humanoidrootpart.Position - Tokens.Position) <= 1 then
             task.wait(0.5)
                 canTeleport = true
             end
