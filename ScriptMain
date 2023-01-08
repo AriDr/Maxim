@@ -1,5 +1,5 @@
 --I Would Recommend 4 Or More For The Teleport Time
-getgenv().api = loadstring(game:HttpGet("https://raw.githubusercontent.com/AriDr/Maxim/codespace-aridr-improved-waffle-p559997j9j43rjxq/Api?token=GHSAT0AAAAAAB5FV6F7ZTAEYMXUTITJGFDEY52UZGA"))()
+getgenv().api = loadstring(game:HttpGet("https://raw.githubusercontent.com/AriDr/Maxim/main/Api"))()
 getgenv().Enabled = false
 local canTeleport = true
 game:GetService("Workspace").Collectibles.ChildAdded:Connect(function(Tokens)
@@ -14,4 +14,3 @@ game:GetService("Workspace").Collectibles.ChildAdded:Connect(function(Tokens)
         end    
     end
 end)
---niggas
