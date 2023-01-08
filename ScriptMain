@@ -1,23 +1,18 @@
---I Would Recommend 3 Or More For The Teleport Time
-getgenv().Enabled_0063 = false
-getgenv().TeleportTime = 4
-getgenv().TokensToFarm = "rbxassetid://6087969886"
-getgenv().Dig = false
+--I Would Recommend 4 Or More For The Teleport Time
+getgenv().api = loadstring(game:HttpGet("https://raw.githubusercontent.com/Boxking776/kocmoc/main/api.lua"))()
+getgenv().Enabled = false
 local canTeleport = true
 game:GetService("Workspace").Collectibles.ChildAdded:Connect(function(Tokens)
-    if canTeleport == true and Enabled_0063 == true and Tokens.FrontDecal.Texture == TokensToFarm then
-        canTeleport = false
-        local TweenService = game:GetService("TweenService")
-        game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Anchored = true
-        TweenService:Create(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(TeleportTime), {CFrame = Tokens.CFrame + Vector3.new(0,1,0)}):Play()
-        wait(TeleportTime)
-        game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Anchored = false
-        task.wait(0.25)
-        if Dig then
-            local LocalCollect = require(game.ReplicatedStorage.Collectors.LocalCollect);
-            LocalCollect.Run(game:GetService("Players").LocalPlayer.Character:FindFirstChildWhichIsA("Tool"));
-        end
-        task.wait(2)
-        canTeleport = true
+    if canTeleport == true and Enabled == true and Tokens:FindFirstChild("FrontDecal") then
+        if (api.humanoidrootpart.Position - Tokens.Position)>=15 then
+            canTeleport = false
+            api:walkTo(Tokens.Position)
+            task.wait(0.5)
+            canTeleport = true
+        else
+            api:walkTo(game:GetService("Workspace").FlowerZones["Stump Field"].Position + vector3.new(0,1,0))
+            task.wait(0.5)
+            canTeleport = true
+        end    
     end
 end)
