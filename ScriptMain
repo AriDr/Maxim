@@ -1,6 +1,5 @@
 --I Would Recommend 4 Or More For The Teleport Time
 getgenv().api = loadstring(game:HttpGet("https://raw.githubusercontent.com/AriDr/Maxim/main/Api"))()
-getgenv().Enabled = false
 local canTeleport = true
 game:GetService("Workspace").Collectibles.ChildAdded:Connect(function(Tokens)
     if canTeleport == true and Enabled == true and Tokens:FindFirstChild("FrontDecal") then
