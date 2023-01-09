@@ -13,6 +13,16 @@ return {
     ["humanoidrootpart"] = function()
         return game:GetService("Players").LocalPlayer.Character.HumanoidRootPart
     end,
+    ['returnvalue'] = function(tab, val)
+        ok = false
+        for i,v in pairs(tab) do
+            if string.match(val, v) then
+                ok = v
+                break
+            end
+        end
+        return ok
+    end,
     ["humanoid"] = function() 
         return game:GetService("Players").LocalPlayer.Character.Humanoid
     end,

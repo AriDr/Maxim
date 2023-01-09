@@ -1,15 +1,57 @@
---I Would Recommend 4 Or More For The Teleport Time
 getgenv().api = loadstring(game:HttpGet("https://raw.githubusercontent.com/AriDr/Maxim/main/Api"))()
-local canTeleport = true
-game:GetService("Workspace").Collectibles.ChildAdded:Connect(function(Tokens)
-    if canTeleport == true and Enabled == true and Tokens:FindFirstChild("FrontDecal") then
-        if api.rmagnitude(game:GetService("Workspace").FlowerZones["Stump Field"].Position,Tokens.Position) <= 35 then
-            canTeleport = false
-            api:walkTo(Tokens.Position)
-            if api.rmagnitude(api.humanoidrootpart.Position - Tokens.Position) <= 3 then
+getgenv().NpcQuest = "Brown Bear"
+getgenv().Enabled = true
+
+local fieldstable = {}
+for _,v in next, game:GetService("Workspace").FlowerZones:GetChildren() do table.insert(fieldstable, v.Name) end
+
+coroutine.wrap(function()
+    while task.wait(0.1) do
+        firesignal(game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.NPC.ButtonOverlay.MouseButton1Click)   
+    end    
+end)()
+
+while task.wait() do
+    if Enable == true then
+        image = game:GetService("Workspace").NPCs[NpcQuest].Platform.AlertPos.AlertGui.ImageLabel
+        button = game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.ActivateButton.MouseButton1Click
+        if image.ImageTransparency == 0 then
+            game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Anchored = true
+            api.tween(2.5,CFrame.new(game:GetService("Workspace").NPCs[NpcQuest].Platform.Position + Vector3.new(0,3,0)))
+            task.wait(2.6)
+            game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Anchored = false
+            for b,z in next, getconnections(button) do    z.Function()    end
+            repeat
+                task.wait()
+            until image.ImageTransparency == 1
             task.wait(0.5)
-                canTeleport = true
+        else
+            if game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.Menus.Children.Quests.Content:FindFirstChild("Frame") then
+                for i,v in next, game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.Menus.Children.Quests:GetDescendants() do
+                    if v.Name == "Description" then
+                        if string.match(v.Parent.Parent.TitleBar.Text, NpcQuest) then
+                            pollentypes = {'White Pollen', "Red Pollen", "Blue Pollen", "Blue Flowers", "Red Flowers", "White Flowers"}
+                            local text = v.Text
+                            if api.returnvalue(fieldstable, text) and not string.find(v.Text, "Complete!") then
+                                d = api.returnvalue(fieldstable, text)
+                                fieldselected = game:GetService("Workspace").FlowerZones[d]
+                                game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Anchored = true
+                                api.tween(2.5,CFrame.new(fieldselected.Position + Vector3.new(0,3,0)))
+                                task.wait(2.6)
+                                game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Anchored = false
+                                repeat
+                                    if game:GetService("Players").LocalPlayer.Character:FindFirstChildWhichIsA("Tool") then
+                                        if game:GetService("Players").LocalPlayer.Character:FindFirstChildWhichIsA("Tool"):FindFirstChild("ClickEvent") then
+                                            game:GetService("Players").LocalPlayer.Character:FindFirstChildWhichIsA("Tool").ClickEvent:FireServer()
+                                        end
+                                    end
+                                    task.wait(0.1)
+                                until string.find(v.Text, "Complete!")   
+                            end
+                        end
+                    end
+                end
             end
-        end    
-    end
-end)
+        end
+    end    
+end    
