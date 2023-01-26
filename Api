@@ -32,7 +32,7 @@ return {
     ["tween"] = function(time, pos)
         local Distance = (game:GetService("Players").LocalPlayer.Character.PrimaryPart.Position - pos).Magnitude
         local TweenTime = time * Distance/15
-        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(TweenTime, Enum.EasingStyle.Linear), {CFrame = pos}):Play() task.wait(time)
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(TweenTime, Enum.EasingStyle.Linear), {CFrame = CFrame.new(pos)}):Play() task.wait(time)
     end,
 
     ["walkTo"] = function(v3)

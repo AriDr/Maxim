@@ -13,4 +13,11 @@ local LocalPlayer = game.Players.LocalPlayer
 local Character = LocalPlayer.Character
 
 -- Script tables
-Api.tween()
+hives = game.Workspace.Honeycombs:GetChildren()
+for i = #hives, 1, -1 do
+    v = game.Workspace.Honeycombs:GetChildren()[i]
+    if v.Owner.Value == nil then
+        Api.tween(1, v.patharrow.Base.CFrame)
+        return
+    end
+end
