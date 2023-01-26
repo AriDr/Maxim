@@ -13,6 +13,7 @@ return {
     ["humanoidrootpart"] = function()
         return game:GetService("Players").LocalPlayer.Character.HumanoidRootPart
     end,
+    
     ['returnvalue'] = function(tab, val)
         ok = false
         for i,v in pairs(tab) do
@@ -23,20 +24,27 @@ return {
         end
         return ok
     end,
+
     ["humanoid"] = function() 
         return game:GetService("Players").LocalPlayer.Character.Humanoid
     end,
+
     ["tween"] = function(time, pos)
-        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(time, Enum.EasingStyle.Linear), {CFrame = pos}):Play() task.wait(time)
+        local Distance = (game:GetService("Players").LocalPlayer.Character.PrimaryPart.Position - pos).Magnitude
+        local TweenTime = time * Distance/15
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(TweenTime, Enum.EasingStyle.Linear), {CFrame = pos}):Play() task.wait(time)
     end,
+
     ["walkTo"] = function(v3)
        game:GetService("Players").LocalPlayer.Character.Humanoid:MoveTo(v3) 
     end,
+
     ["isExist"] = function(obj)
         if obj ~= nil then
            return true
         end
     end,
+
     ["notify"] = function(title, description, duration)
         pcall(function()
             game.StarterGui:SetCore("SendNotification", {
@@ -46,6 +54,7 @@ return {
             })
         end)
     end,
+
     ["isSynapse"] = function()
         if syn then
             return true
@@ -53,6 +62,7 @@ return {
             return false
         end
     end,
+
     ['isKrnl'] = function()
         if Krnl then
             return true
@@ -60,20 +70,29 @@ return {
             return false
         end
     end,
+
     ['nickname'] = game.Players.LocalPlayer.Name,
+
     ['placeid'] = game.PlaceId,
+
     ['placeversion'] = game.PlaceVersion,
+
     ['plrico'] = function(userid)
         return "https://www.roblox.com/headshot-thumbnail/image?userId="..userid.."&width=420&height=420&format=png"
     end,
+
     ['lplrid'] = game.Players.LocalPlayer.UserId,
+
     ['rmagnitude'] = function(v1, v2)
         return (v1-v2).magnitude
     end,
+
     ['player'] = game:GetService("Players").LocalPlayer,
+
     ['camera'] = function()
         return game:GetService("Workspace").Camera
     end,
+
     ['search'] = {
         ['byName'] = function(a,b)
             for _,v in pairs(a:GetDescendants()) do
@@ -104,6 +123,7 @@ return {
             end)
         end
     },
+
     ['childTable'] = function(path)
         local rtable = {}
         for _,v in pairs(path:GetChildren()) do
@@ -111,6 +131,7 @@ return {
         end
         return rtable
     end,
+
     ['generaterandomstring'] = function(a)
         local let = ('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890'):split('')
         local string = '' 
@@ -119,8 +140,11 @@ return {
         end 
         return string 
     end,
+
     ['request'] = syn and syn.request or http and http.request or http_request or httprequest or request,
+
     ['pathfindserv'] = game:GetService('PathfindingService'),
+
     ['toHMS'] = function(t)
         Minutes = (t - t%60)/60
         t = t - Minutes*60
@@ -128,6 +152,7 @@ return {
         Minutes = Minutes - Hours*60
         return string.format("%02i", Hours)..":"..string.format("%02i", Minutes)..":"..string.format("%02i", t)
     end,
+
     ['pathfind'] = function(target)
         local PathfindingService = game:GetService("PathfindingService")
         local Humanoid = game.Players.LocalPlayer.Character.Humanoid

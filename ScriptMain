@@ -1,9 +1,54 @@
 getgenv().api = loadstring(game:HttpGet("https://raw.githubusercontent.com/AriDr/Maxim/main/Api"))()
-getgenv().NpcQuest = "Brown Bear"
+getgenv().NpcQuest = "Polar Bear"
 getgenv().Enabled = true
+
+local monstertypes = {"Ladybug", "Rhino", "Spider", "Scorpion", "Mantis", "Werewolf"}
+
+function IsToken(token)
+    if not token then
+        return false
+    end
+    if not token.Parent then return false end
+    if token then
+        if token.Orientation.Z ~= 0 then
+            return false
+        end
+        if token:FindFirstChild("FrontDecal") then
+        else
+            return false
+        end
+        if not token.Name == "C" then
+            return false
+        end
+        if not token:IsA("Part") then
+            return false
+        end
+        return true
+    else
+        return false
+    end
+end
 
 local fieldstable = {}
 for _,v in next, game:GetService("Workspace").FlowerZones:GetChildren() do table.insert(fieldstable, v.Name) end
+
+function farm(trying)
+    api.walkTo(trying.Position)
+    repeat task.wait() until (trying.Position-game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position).magnitude <=4 or not IsToken(trying)
+end
+
+function gettoken(v3)
+    if not v3 then
+        v3 = fieldposition
+    end
+    task.wait()
+    for e,r in next, game:GetService("Workspace").Collectibles:GetChildren() do
+        itb = false
+        if tonumber((r.Position - game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position).magnitude) <= 60/1.4 and not itb and (v3-r.Position).magnitude <= 60 then
+            farm(r)
+        end
+    end
+end
 
 coroutine.wrap(function()
     while task.wait(0.1) do
@@ -11,19 +56,27 @@ coroutine.wrap(function()
     end    
 end)()
 
+function avoidmob()
+    for i,v in next, game:GetService("Workspace").Monsters:GetChildren() do
+        if v:FindFirstChild("Head") then
+            if (v.Head.Position-HRP.Position).magnitude < 30 and api.humanoid():GetState() ~= Enum.HumanoidStateType.Freefall then
+                Humanoid.Jump = true
+            end
+        end
+    end
+end
+
 while task.wait() do
-    if Enable == true then
+    if Enabled == true then
         image = game:GetService("Workspace").NPCs[NpcQuest].Platform.AlertPos.AlertGui.ImageLabel
         button = game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.ActivateButton.MouseButton1Click
         if image.ImageTransparency == 0 then
+            print("Quest Available")
             game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Anchored = true
             api.tween(2.5,CFrame.new(game:GetService("Workspace").NPCs[NpcQuest].Platform.Position + Vector3.new(0,3,0)))
-            task.wait(2.6)
+            task.wait(2.5)
             game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Anchored = false
             for b,z in next, getconnections(button) do    z.Function()    end
-            repeat
-                task.wait()
-            until image.ImageTransparency == 1
             task.wait(0.5)
         else
             if game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.Menus.Children.Quests.Content:FindFirstChild("Frame") then
@@ -45,8 +98,27 @@ while task.wait() do
                                             game:GetService("Players").LocalPlayer.Character:FindFirstChildWhichIsA("Tool").ClickEvent:FireServer()
                                         end
                                     end
+                                    gettoken(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position)
                                     task.wait(0.1)
-                                until string.find(v.Text, "Complete!")   
+                                until string.find(v.Text, "Complete!") 
+                            elseif text:match("Defeat") then
+                                if api.returnvalue(monstertypes, text) then
+                                    for i,v in pairs(game:GetService("Workspace").MonsterSpawners:GetChildren()) do
+                                        if v.Name:match(api.returnvalue(monstertypes, text)) then
+                                            if v:FindFirstChild("Territory") and not v.Attachment.TimerGui:FindFirstChild("TimerLabel", true).Visible then
+                                                fieldselected = v.Territory.Value
+                                                game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Anchored = true
+                                                api.tween(2.5,CFrame.new(fieldselected.Position + Vector3.new(0,3,0)))
+                                                task.wait(2.5)
+                                                game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Anchored = false
+                                                repeat
+                                                    avoidmob()
+                                                    task.wait(0.5)
+                                                until v:FindFirstChild("TimerLabel", true).Visible
+                                            end     
+                                        end
+                                    end        
+                                end    
                             end
                         end
                     end
